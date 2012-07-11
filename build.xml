@@ -2,6 +2,21 @@
 
 <project name="test-drupal" default="coding-standards">
 
+<!-- ## Helper targets
 
+These targets are used throughout the project and should normally not be
+executed directly.-->
+
+<!-- ### Initialization
+
+This target sets up many of the common resources used throughout the build.
+All other targets except dependencies for this target should depend on this
+unless specifically stated why. -->
+  <target name="init"
+          depends="load-properties, setup-dirs, setup-filesets"
+          unless="project.initialized">
+    <!-- Set property to prevent target from being executed multiple times -->
+    <property name="project.initialized" value="true"/>
+  </target>
 
 </project>
