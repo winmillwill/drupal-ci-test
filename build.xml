@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+
+<project name="test" basedir="." default="testSyntaxOK">
+
+    <taskdef classname="tasks.user.MyEchoTask" name="myecho1"/>
+
+    <target name="prometEcho">
+    	<myecho1 message="Setting up .. Hello World" />
+    </target>
+
+    <target name="myecho" depends="prometEcho">
+    	<myecho1 message="Hello World" />
+    </target>
+
+    <target name="testSyntaxOK">
+            <phplint file="my_file_ok.php"/>
+    </target>
+    <target name="testSyntaxError">
+          <phplint deprecatedaserror="true" file="my_file.php"/>
+    </target>
+
+    <target name="testDeprecated">
+		  <fileset dir=".">
+		    <include name="**/*.php"/>
+		  </fileset>    	
+         <phplint deprecatedaserror="true"/>
+    </target>
+
+    <target name="testHaltOnFailure">
+	    <phplint haltOnFailure="true">
+	        <fileset dir=".">
+	                <include name="my_file.php"/>
+	        </fileset>
+	    </phplint>
+    </target>
+
+</project>
