@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<project name="test-drupal" default="coding-standards">
+<project name="test-drupal" default="coding-standards-custom">
 
 <!-- ## Helper targets
 
@@ -242,6 +242,20 @@ Check files for syntax errors. -->
     <phplint haltonfailure="true">
       <fileset refid="src.php.custom" />
     </phplint>
+  </target>
+
+<!-- ### Coding Standards
+
+Perform Shallow Site Quality Checks, coding standards, syntax errors, etc.. . -->
+
+  <target name="coding-standards-custom"
+          description="Perform Shallow Site Quality Checks, coding standards, syntax errors, etc.. on custom directories"
+          depends="lint-php-custom">
+  </target>
+
+  <target name="coding-standards-all"
+          description="Perform Shallow Site Quality Checks, coding standards, syntax errors, etc.. on all directories"
+          depends="lint-php-all">
   </target>
 
 </project>
