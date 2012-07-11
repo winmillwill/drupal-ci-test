@@ -1,0 +1,93 @@
+<?php
+
+function nodelocks_menu() {
+  $items = array(
+    'admin/config/development/nodelocks' => array(
+      'title' => 'Node Locks',
+      'description' => 'Configure which nodes to lock.',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('nodelocks_settings'),
+      'type' => MENU_NORMAL_ITEM,
+      'access arguments' => array('access administration pages')
+    )
+  );
+  return $items;
+}
+
+function nodelocks_settings() {
+  $form = array();
+  $form['nodelocks_locked_nodes'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Nodes to lock'),
+    '#description' => t('Node IDs separated by commas'),
+    '#default_value' => join(',', variable_get('nodelocks_locked_nodes', array()))
+  );
+  return system_settings_form($form);
+}
+
+function nodelocks_settings_validate($form, &$form_state) {
+  // If empty, skip validation
+  if ($form_state['values']['nodelocks_locked_nodes'] === '') {
+    $form_state['values']['nodelocks_locked_nodes'] = array();
+    return;
+  }
+  $nids = array();
+  $nids = explode(',', $form_state['values']['nodelocks_locked_nodes']);
+  if (!$nids) {
+    $nids = intval($form_state['values']['nodelocks_locked_nodes']) > 0;
+  }
+  $temp = array();
+  if ($nids && is_array($nids) && count($nids) > 0) {
+    foreach ($nids as $nid) {
+      if (node_load($nid)) {
+        $temp[] = $nid;
+      }
+      else {
+        form_set_error('nodelocks_locked_nodes', 'Unable to lock non-existent node with nid ' . $nid . '.');
+      }
+    }
+  }
+  form_set_value($form['nodelocks_locked_nodes'], $temp, $form_state);
+}
+
+function nodelocks_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'page_node_form':
+      $form['actions']['delete']['#disabled'] = TRUE;
+      break;
+    case 'node_admin_content':
+      $nids = array_keys($form['admin']['nodes']['#options']);
+      foreach ($nids as $nid) {
+        if (!nodelocks_can_delete_node($nid)) {
+          unset($form['admin']['nodes']['#options'][$nid]['operations']['data']['#links']['delete']);
+          $form['admin']['nodes']['#options'][$nid]['status'] .= ' (locked)';
+        }
+      }
+      
+      if ($form_state['input'] && $form_state['input']['operation'] == 'delete') {
+        $canDelete = FALSE;
+        foreach ($form_state['input']['nodes'] as $nid) {
+          // If only one node cannot be deleted, cancel the entire operation.
+          $canDelete = $canDelete ? nodelocks_can_delete_node($nid) : FALSE;
+        }
+        if (!$canDelete) {
+          form_set_error('', t('Node cannot be deleted.'));
+        }
+      }
+      break;
+    case 'node_delete_confirm':
+      array_unshift($form['#validate'], 'nodelocks_validate');
+      break;
+  }
+}
+
+function nodelocks_validate($form, $form_state) {
+  if (!nodelocks_can_delete_node($form['nid'])) {
+    form_set_error('', t('Node cannot be deleted.'));
+  }
+}
+
+function nodelocks_can_delete_node($nid) {
+  $nids = variable_get('nodelocks_locked_nodes', array());
+  return !in_array($nid, $nids);
+}
