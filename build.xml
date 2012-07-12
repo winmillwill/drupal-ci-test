@@ -120,14 +120,26 @@ called from `init` target. -->
               value="${project.drupal.dir}/${project.code.dir}" />
     <property name="project.builddir"
               value="${project.basedir}/build" />
+    <!-- Useful to make the current buildtime available as a property -->
+    <tstamp>
+        <!-- Format is, 201207011202 YYYYMMDDHHMM -->
+        <format property="buildtime" pattern="%Y%m%d%H%M"/>
+    </tstamp>              
+    <property name="project.currentbuilddir"
+              value="${project.builddir}/${buildtime}" />              
     <property name="project.toolsdir"
               value="${project.builddir}/tools" />
     <property name="project.coveragedir"
-              value="${project.builddir}/coverage" />
+              value="${project.currentbuilddir}/coverage" />
     <property name="project.logdir"
-              value="${project.builddir}/logs" />
+              value="${project.currentbuilddir}/logs" />
     <property name="project.testdir"
-              value="${project.builddir}/tests" />
+              value="${project.currentbuilddir}/tests" />
+    <!-- Using mkdir with a property -->
+    <mkdir dir="${project.currentbuilddir}" />              
+    <mkdir dir="${project.coveragedir}" />    
+    <mkdir dir="${project.logdir}" />
+    <mkdir dir="${project.testdir}" />        
   </target>
 
 <!-- ### Setup file sets
