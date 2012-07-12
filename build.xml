@@ -634,6 +634,65 @@ No need to run `init` here. This target should only be called through parent
     </if>
   </target>
 
+<!-- ### Detect code mess
+
+Uses [PHPMD](http://phpmd.org/) to detect code mess and look for potential
+problems. -->
+  <target name="phpmd"
+          description="Generate pmd.xml using PHPMD"
+          depends="init">
+    <!-- We do not use the unusedcode ruleset as Drupal hook implementations
+         usually are declared with all arguements but may not use them
+         all. -->
+    <phpmd rulesets="codesize,naming,design">
+      <fileset refid="src.php.custom" />
+      <formatter type="xml" outfile="${project.logdir}/pmd.xml"/>
+    </phpmd>
+  </target>
+
+<!-- ### Detect potential copy/pasting
+
+Uses [phpcpd](https://github.com/sebastianbergmann/phpcpd) to detect duplicate
+code. This indicates potential refactorings.-->
+  <target name="phpcpd"
+          description="Generate pmd-cpd.xml using phpcpd"
+          depends="init">
+    <phpcpd>
+      <fileset refid="src.php.custom" />
+      <formatter type="pmd" outfile="${project.logdir}/pmd-cpd.xml"/>
+    </phpcpd>
+  </target>
+
+<!-- ### Generate code statistics
+
+Measures the size of the project using
+[phploc](http://sebastianbergmann.github.com/phploc/) and generates
+statistics. -->
+  <target name="phploc"
+          description="Generate phploc.csv using phploc"
+          depends="init, setup-phing-phploc">
+    <!-- Suffixes should be the same as included in the
+         src.php filesets -->
+    <phploc reportType="csv"
+            reportName="phploc" reportDirectory="${project.logdir}"
+            suffixes="php,module,inc,install,profile,test" countTests="true">
+      <fileset refid="src.php.custom" />
+    </phploc>
+  </target>
+
+  <!-- #### Setup Phing phploc integration -->
+  <target name="setup-phing-phploc"
+          depends="init" >
+    <!-- Clone the project -->
+    <phingcall target="setup-git-repo">
+      <property name="repo.dir" value="${project.toolsdir}/phing-phploc"/>
+      <property name="repo.url" value="${phing.phploc.repository.url}" />
+    </phingcall>
+    <!-- Register the custom Phing task -->
+    <taskdef name="phploc" classname="PHPLocTask"
+             classpath="${project.toolsdir}/phing-phploc" />
+  </target>
+
 <!-- ### Coding Standards
 
 Perform Shallow Site Quality Checks, coding standards, syntax errors, etc.. . -->
