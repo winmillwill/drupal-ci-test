@@ -248,12 +248,12 @@ Check files for syntax errors. -->
 
 Perform Shallow Site Quality Checks, coding standards, syntax errors, etc.. . -->
 
-  <target name="coding-standards-custom"
+  <target name="verify-custom"
           description="Perform Shallow Site Quality Checks, coding standards, syntax errors, etc.. on custom directories"
           depends="lint-php-custom">
   </target>
 
-  <target name="coding-standards-all"
+  <target name="verify-all"
           description="Perform Shallow Site Quality Checks, coding standards, syntax errors, etc.. on all directories"
           depends="lint-php-all">
   </target>
