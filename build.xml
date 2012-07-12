@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<project name="test-drupal" default="coding-standards-custom">
+<project name="test-drupal" default="verify-custom">
 
 <!-- ## Helper targets
 
