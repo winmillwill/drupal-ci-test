@@ -253,6 +253,48 @@ called from `init` target. -->
     </if>
   </target>
 
+<!-- ### Setup Rhino
+
+[Mozilla Rhino](http://www.mozilla.org/rhino/) is an open-source implementation of JavaScript written in Java. -->
+   <target name="setup-rhino"
+           depends="setup-dirs"
+           unless="project.rhino.setup">
+     <property name="rhino.dir"
+               value="${project.toolsdir}/rhino" />
+     <php function="basename" returnProperty="rhino.basename">
+       <param value="${rhino.url}" />
+       <!-- We assume that the version of Rhino used is a distribution
+            where the filename ends in `.zip` -->
+       <param value=".zip" />
+     </php>
+
+     <!-- Other targets use this property to determine the location of the
+          `js.jar` file -->
+     <property name="rhino.jar"
+               value="${rhino.dir}/${rhino.basename}/js.jar"/>
+
+     <!-- If the Rhino js.jar file is not available then download and
+          unpack Rhino -->
+     <if>
+       <not><available file="${rhino.jar}"/></not>
+       <then>
+         <mkdir dir="${rhino.dir}" />
+         <php function="basename" returnProperty="rhino.zipfile">
+           <param value="${rhino.url}" />
+         </php>
+         <httpget url="${rhino.url}"
+                  dir="${rhino.dir}"
+                  proxy="${phing.httpget.proxy}"/>
+         <unzip file="${rhino.dir}/${rhino.zipfile}"
+                todir="${rhino.dir}" />
+       </then>
+     </if>
+
+     <!-- Set property to prevent unnecessary additional invocations of this
+          target -->
+     <property name="project.rhino.setup" value="true" />
+   </target>
+
 <!-- ### Clean working environment  -->
   <target name="clean"
           description="Clean up and create artifact directories"
