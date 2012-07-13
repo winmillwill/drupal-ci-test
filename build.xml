@@ -693,6 +693,28 @@ statistics. -->
              classpath="${project.toolsdir}/phing-phploc" />
   </target>
 
+<!-- ### Review code using PHP_CodeSniffer
+
+The purpose and outcome of this target is the same as the coder-review
+targets. In general [PHP_CodeSniffer](http://pear.php.net/package/PHP_CodeSniffer/)
+is faster, and as of July 3 2012, http://drupal.org/node/1670316 has a better coverage.
+[Drupal coding standards](http://drupal.org/coding-standards).
+
+-->
+    <target name="phpcs"
+            description="Generate checkstyle.xml using PHP_CodeSniffer and drupalcs"
+            depends="init">
+      <!-- There is no Phing task for PHP Codesniffer in v2.4.6.
+           It's coming for v2.5. Execute while we wait. -->
+      <exec command="phpcs --report=checkstyle
+                    --report-file=${project.logdir}/checkstyle-codesniffer.xml
+                    --standard=Drupal
+                    --extensions=php,inc,module
+                    --ignore=*/contrib/*,*/*.features.*,*/*.field_group.inc,*/*.layout.*,*/*.pages_default.*,*/*.panels_default.*,*/*strongarm.inc,*/*.views_default.inc
+                    ${project.sitesdir}"
+            logoutput="true" />
+    </target>
+
 <!-- ### Coding Standards
 
 Perform Shallow Site Quality Checks, coding standards, syntax errors, etc.. . -->
