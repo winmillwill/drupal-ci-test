@@ -144,7 +144,8 @@ complies with coding standards. -->
                                   clean,
                                   phploc,
                                   phpmd,
-                                  phpcpd">
+                                  phpcpd,
+                                  phpcb">
   </target>
 
 <!-- ### Generate documentation
@@ -152,8 +153,7 @@ complies with coding standards. -->
 Generate HTML documentation and code browser for the project. -->
   <target name="docs" depends="init,
                                clean,
-                               phpdoc,
-                               phpcb" />
+                               phpdoc" />
 
 <!-- ## Individual targets
 These targets can be executed individually or grouped unless explicitly
@@ -761,7 +761,24 @@ colored error-sections using
     <!-- There is no Phing target for PHP CodeBrowser so do a plain
          execute. -->
     <exec command="phpcb  --log ${project.logdir}
-                          --source ${project.basedir}
+                          --source ${project.code.dir}
+                          --output ${project.builddir}/code-browser"
+          logoutput="true" />
+  </target>
+
+<!-- #### Generate a code browser
+
+Generate a code browser for PHP files with syntax highlighting and
+colored error-sections using
+[PHP_CodeBrowser](https://github.com/Mayflower/PHP_CodeBrowser). -->
+  <target name="phpcb-all"
+          description="Aggregate tool output with PHP_CodeBrowser"
+          depends="init">
+    <mkdir dir="${project.builddir}/code-browser"/>
+    <!-- There is no Phing target for PHP CodeBrowser so do a plain
+         execute. -->
+    <exec command="phpcb  --log ${project.logdir}
+                          --source ${project.base.dir}
                           --output ${project.builddir}/code-browser"
           logoutput="true" />
   </target>
