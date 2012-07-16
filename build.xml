@@ -658,12 +658,6 @@ Consequently `coder-review-d6/7` and not `phpcs` is used for the main targets.
     <target name="phpcs"
             description="Generate checkstyle.xml using PHP_CodeSniffer"
             depends="init">
-      <!-- Clone a repository containing Drupal code guidelines for
-           PHP_CodeSniffer. -->
-      <phingcall target="setup-git-repo">
-        <property name="repo.dir" value="${project.toolsdir}/drupalcs"/>
-        <property name="repo.url" value="${phpcs.drupalcs.repository.url}" />
-      </phingcall>
       <!-- There is no Phing task for PHP Codesniffer in v2.4.6.
            It's coming for v2.5. Execute while we wait. -->
       <exec command="phpcs --report=checkstyle
