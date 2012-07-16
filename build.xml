@@ -124,9 +124,13 @@ called from `init` target. -->
     <tstamp>
         <!-- Format is, 201207011202 YYYYMMDDHHMM -->
         <format property="buildtime" pattern="%Y%m%d%H%M"/>
-    </tstamp>              
+    </tstamp>
+    <!-- remove local tracking datestamp folders, let jenkins handler this functinality
     <property name="project.currentbuilddir"
-              value="${project.builddir}/${buildtime}" />              
+              value="${project.builddir}/${buildtime}" />
+    -->
+    <property name="project.currentbuilddir"
+              value="${project.builddir}" />
     <property name="project.toolsdir"
               value="${project.builddir}/tools" />
     <property name="project.coveragedir"
