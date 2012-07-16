@@ -139,17 +139,6 @@ complies with coding standards. -->
                                   phploc,
                                   phpmd,
                                   phpcpd">
-    <!-- Moved inside target to support properties in target name -->
-    <phingcall target="coder-review-d${drupal.version}">
-      <!-- Run the target as if it was executed from the Drupal root
-           directory. -->
-      <property name="project.basedir" value="${project.drupal.dir}"/>
-      <!-- We already have a clean environment so avoid further cleaning. -->
-      <property name="project.cleaned" value="1"/>
-      <!-- Make will run again as a part of the `init` target. We already have
-           a working site so skip that. -->
-      <property name="project.make.skip" value="1"/>
-    </phingcall>
   </target>
 
 <!-- ### Generate documentation
