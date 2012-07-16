@@ -715,6 +715,23 @@ is faster, and as of July 3 2012, http://drupal.org/node/1670316 has a better co
             logoutput="true" />
     </target>
 
+<!-- #### Generate a code browser
+
+Generate a code browser for PHP files with syntax highlighting and
+colored error-sections using
+[PHP_CodeBrowser](https://github.com/Mayflower/PHP_CodeBrowser). -->
+  <target name="phpcb"
+          description="Aggregate tool output with PHP_CodeBrowser"
+          depends="init">
+    <mkdir dir="${project.currentbuilddir}/code-browser"/>
+    <!-- There is no Phing target for PHP CodeBrowser so do a plain
+         execute. -->
+    <exec command="phpcb  --log ${project.logdir}
+                          --source ${project.code.dir}
+                          --output ${project.currentbuilddir}/code-browser"
+          logoutput="true" />
+  </target>
+
 <!-- ### Coding Standards
 
 Perform Shallow Site Quality Checks, coding standards, syntax errors, etc.. . -->
