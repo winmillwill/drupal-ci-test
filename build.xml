@@ -328,7 +328,7 @@ Check files for syntax errors. -->
   <target name="lint-php-all"
           description="Check all PHP files for syntax errors using PHPLint"
           depends="init">
-    <phplint haltonfailure="true" tofile="${project.currentbuilddir}/php-lint-errors.log">
+    <phplint haltonfailure="true" tofile="${project.logdir}/php-lint-errors.log">
       <fileset refid="src.php" />
     </phplint>
   </target>
@@ -336,7 +336,7 @@ Check files for syntax errors. -->
   <target name="lint-php-custom"
           description="Check custom PHP files for syntax errors using PHPLint"
           depends="init">
-    <phplint haltonfailure="true" tofile="${project.currentbuilddir}/php-lint-errors.log">
+    <phplint haltonfailure="true" tofile="${project.logdir}/php-lint-errors.log">
       <fileset refid="src.php.custom" />
     </phplint>
   </target>
