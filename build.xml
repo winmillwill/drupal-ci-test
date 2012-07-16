@@ -721,7 +721,16 @@ Perform Shallow Site Quality Checks, coding standards, syntax errors, etc.. . --
 
   <target name="verify-custom"
           description="Perform Shallow Site Quality Checks, coding standards, syntax errors, etc.. on custom directories"
-          depends="lint-php-custom">
+          depends="lint-php-custom,
+          lint-css-custom,
+          lint-js-custom,
+          lint-php-custom,
+          phpcpd,
+          phploc,
+          phpmd,
+          check-php-debug,
+          check-js-debug">
+
   </target>
 
   <target name="verify-all"
