@@ -722,7 +722,10 @@ colored error-sections using
 [PHP_CodeBrowser](https://github.com/Mayflower/PHP_CodeBrowser). -->
   <target name="phpcb"
           description="Aggregate tool output with PHP_CodeBrowser"
-          depends="init">
+          depends="init,
+          phpmd,
+          phploc,
+          phpcpd">
     <mkdir dir="${project.currentbuilddir}/code-browser"/>
     <!-- There is no Phing target for PHP CodeBrowser so do a plain
          execute. -->
@@ -746,8 +749,8 @@ Perform Shallow Site Quality Checks, coding standards, syntax errors, etc.. . --
           phploc,
           phpmd,
           check-php-debug,
-          check-js-debug">
-
+          check-js-debug,
+          phpcb">
   </target>
 
   <target name="verify-all"
