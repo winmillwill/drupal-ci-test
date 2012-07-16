@@ -110,15 +110,14 @@ Do a complete build of the project by verifying code consistency and and
 performing static analysis of the code.
 
 This is the default build target.
-
-Do not run `docs` for now. Generating documentation eats up memory and build
-time and is largely obsolete when using GitHub. -->
+ -->
   <target name="build" depends="init,
                                 clean,
                                 verify,
-                                analyze" />
+                                analyze,
+                                docs" />
 
-  <target name="buildwithdoc" depends="init,
+  <target name="buildwithoutdocs" depends="init,
                                 clean,
                                 verify,
                                 analyze" />
