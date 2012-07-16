@@ -100,7 +100,7 @@ Drush Make and Simpletest support has been sponsored by [DBC](http://www.dbc.dk/
 </a>
 -->
 
-<project name="phing-drupal" default="build" phingVersion="2.4.11">
+<project name="phing-drupal" default="buildwithdoc" phingVersion="2.4.11">
 
 <!-- ## Main targets -->
 
@@ -114,6 +114,11 @@ This is the default build target.
 Do not run `docs` for now. Generating documentation eats up memory and build
 time and is largely obsolete when using GitHub. -->
   <target name="build" depends="init,
+                                clean,
+                                verify,
+                                analyze" />
+
+  <target name="buildwithdoc" depends="init,
                                 clean,
                                 verify,
                                 analyze" />
@@ -147,7 +152,10 @@ Generate HTML documentation and code browser for the project. -->
   <target name="docs" depends="init,
                                clean,
                                phpdoc,
-                               phpcb" />
+                               phpcb,
+                               verify,
+                               analyze
+                               " />
 
 <!-- ## Individual targets
 These targets can be executed individually or grouped unless explicitly
