@@ -127,8 +127,7 @@ Make sure that our code is clean and functional. -->
                                  lint-js-custom,
                                  lint-css-custom,
                                  check-php-debug,
-                                 check-js-debug,
-                                 simpletest"/>
+                                 check-js-debug"/>
 
 <!-- ### Analyze code
 
